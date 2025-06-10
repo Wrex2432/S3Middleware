@@ -94,19 +94,21 @@ app.get('/list-players', async (req, res) => {
     const data = await s3.listObjectsV2(listParams).promise();
 
     const files = data.Contents
-      .filter(obj => obj.Key.match(/^players\/g\d+\/\d{2}_\d{3}\.png$/i)) // Match players/gX/XX_AAA.png
+      .filter(obj => obj.Key.match(/^players\/g\d+\/\d{2}_\d{3}_P\d\.png$/i)) // Match players/gX/XX_AAA_PY.png
       .map(obj => {
         const keyParts = obj.Key.split('/');
-        const folder = keyParts[1]; // g0, g1, etc.
-        const filename = keyParts[2]; // e.g. 01_123.png
-        const [gameNumber, userCode] = filename.replace('.png', '').split('_');
+        const folder = keyParts[1]; // gX
+        const filename = keyParts[2]; // e.g. 01_123_P1.png
+
+        const [gameNumber, userCode, slotId] = filename.replace('.png', '').split('_');
 
         return {
           key: obj.Key,
           url: `https://${BUCKET_NAME}.s3.ap-southeast-1.amazonaws.com/${obj.Key}`,
-          folder,
-          gameNumber,
-          userCode
+          folder,        // gX
+          gameNumber,    // XX
+          userCode,      // AAA
+          slot: slotId   // P1, P2, etc.
         };
       });
 
