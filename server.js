@@ -6,7 +6,8 @@ const multer = require('multer');
 const { DateTime } = require('luxon');
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
 const upload = multer(); // memory storage
 
 app.use(cors());
