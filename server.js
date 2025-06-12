@@ -23,7 +23,7 @@ AWS.config.update({
 });
 
 const s3 = new AWS.S3();
-const BUCKET_NAME = 'metama-sg-cloud';
+const BUCKET_NAME = 'metama-sgtjr-cloud';
 const FOLDER = 'uploads/';
 
 // Upload endpoint (unchanged)
